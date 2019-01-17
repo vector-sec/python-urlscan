@@ -55,5 +55,23 @@ class UrlScan:
         else:
             raise Exception('Non-200 respond: %s - %s' % screen.status_code,screen.text)
 
+    # def getReport(self):
+    #     self.checkStatus()
+    #     header = {'API-Key':self.apikey}
+    #     result = requests.get("https://urlscan.io/result/%s/" % self.scanid,headers=header)
+    #     if result.status_code == 200:
+    #         return result.text
+    #     else:
+    #         raise Exception('Non-200 respond: %s - %s' % result.status_code,result.text)
+
+    def getJson(self):
+        self.checkStatus()
+        header = {'API-Key':self.apikey}
+        json = requests.get("https://urlscan.io/api/v1/result/%s/" % self.scanid,headers=header)
+        if json.status_code == 200:
+            return json.json()
+        else:
+            raise Exception('Non-200 respond: %s - %s' % json.status_code,json.text)
+
     def __repr__(self):
         return "<UrlScan(url='%s', useragent='%s', referer='%s', public='%s', scanid='%s'>" % (self.url,self.useragent,self.referer,self.public,self.scanid)
